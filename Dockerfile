@@ -61,7 +61,9 @@ RUN mkdir -p /config \
     zlib1g \
     liblzma5 \
     liblzo2-2 \
-    nano
+    nano \
+    gosu \
+    && gosu nobody true
 
 WORKDIR /config
 
@@ -69,6 +71,7 @@ WORKDIR /config
 COPY --from=ottd_build /app /app
 
 # Add the entrypoint
+ADD startgame.sh /usr/local/bin/startgame
 ADD entrypoint.sh /usr/local/bin/entrypoint
 
 # Expose the volume
@@ -89,5 +92,4 @@ ENV XDG_DATA_HOME=/config
 ENV PATH="$PATH:/app"
 
 # Finally, let's run OpenTTD!
-USER openttd
 CMD [ "/usr/local/bin/entrypoint" ]
